@@ -1,6 +1,6 @@
 # RAG Enterprise Engine
 
-Production-ready, local-first RAG microservice built with FastAPI, PostgreSQL + `pgvector` (hybrid search), sentence-transformers (dense embedding + cross-encoder reranking), and Ollama running **DeepSeek-Coder-V2:16b** (or compatible local models like DeepSeek-R1 / Qwen2.5).
+Production-ready, local-first RAG microservice built with FastAPI, PostgreSQL + `pgvector` (hybrid search), sentence-transformers (dense embedding + cross-encoder reranking), and Ollama running **DeepSeek-Coder-V2:16b** (or compatible local models like DeepSeek-R1 / Qwen2.5), complete with a stunning **Streamlit Frontend Dashboard**.
 
 ---
 
@@ -27,6 +27,7 @@ User Query ──────►│ 1. Query Normalization & Cache Check   │
 ---
 
 ## 2. Tech Stack
+- **Frontend Dashboard:** Streamlit (Real-time streaming chat, sidebar document ingestion, system health metrics)
 - **API Framework:** FastAPI (Async, Pydantic v2)
 - **Database & Vector Store:** PostgreSQL 16 with `pgvector` (HNSW indexing) & async SQLAlchemy
 - **Embeddings & Reranking:** HuggingFace `sentence-transformers` (`BAAI/bge-small-en-v1.5` & `BAAI/bge-reranker-base`)
@@ -38,24 +39,16 @@ User Query ──────►│ 1. Query Normalization & Cache Check   │
 
 ## 3. Getting Started
 
-### Prerequisites
-- Docker & Docker Compose
-- Python 3.11+ (for local development)
-
-### Quick Start with Docker Compose
+### Quick Start
 ```bash
-# 1. Start services
+# 1. Start backend services (PostgreSQL + pgvector)
 make up
 
-# 2. Pull DeepSeek-Coder-V2 inside Ollama container
-make pull-model
-
-# 3. Check health
-curl http://localhost:8000/api/v1/health
+# 2. Run the frontend dashboard
+make frontend
 ```
 
-### Running Tests Locally
-```bash
-pip install -r requirements.txt
-pytest -v
-```
+### Accessing the Dashboard & API
+- **Frontend UI:** `http://localhost:8501`
+- **API Swagger Docs:** `http://localhost:8001/docs`
+- **Health Check:** `http://localhost:8001/api/v1/health`

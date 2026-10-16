@@ -1,4 +1,4 @@
-.PHONY: help build up down test lint ingest
+.PHONY: help build up down test lint frontend
 
 help:
 	@echo "Makefile commands:"
@@ -7,7 +7,7 @@ help:
 	@echo "  make down       - Stop services"
 	@echo "  make test       - Run pytest unit/integration tests"
 	@echo "  make lint       - Run ruff linter"
-	@echo "  make pull-model - Pull DeepSeek-Coder-V2 16b inside Ollama container"
+	@echo "  make frontend   - Run Streamlit frontend dashboard"
 
 build:
 	docker compose build
@@ -24,5 +24,5 @@ test:
 lint:
 	ruff check .
 
-pull-model:
-	docker exec -it rag-enterprise-engine-ollama-1 ollama run deepseek-coder-v2:16b
+frontend:
+	cd frontend && pip install -r requirements.txt && streamlit run app.py
