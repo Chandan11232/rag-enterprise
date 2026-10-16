@@ -25,4 +25,4 @@ lint:
 	ruff check .
 
 frontend:
-	cd frontend && pip install -r requirements.txt && streamlit run app.py
+	cd frontend && ../venv/bin/pip install -r requirements.txt && ../venv/bin/streamlit run app.py

@@ -1,6 +1,6 @@
-import streamlit as st
+
 import httpx
-import json
+import streamlit as st
 
 API_BASE_URL = "http://localhost:8001/api/v1"
 
@@ -46,7 +46,7 @@ with st.sidebar:
             st.success("🟢 Backend & Database Online")
         else:
             st.error("🔴 Backend Degraded")
-    except Exception:
+    except Exception:  # noqa: BLE001
         st.error("🔴 Backend Offline (Start FastAPI)")
 
     st.divider()
@@ -74,7 +74,7 @@ with st.sidebar:
                         st.success(f"✅ Ingested! Created {data['chunks_created']} chunks (ID: {data['document_id']})")
                     else:
                         st.error(f"Error: {res.text}")
-                except Exception as e:
+                except Exception as e:  # noqa: BLE001
                     st.error(f"Connection error: {e}")
 
 # Main Chat Interface
@@ -86,7 +86,7 @@ if "messages" not in st.session_state:
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-        if "sources" in message and message["sources"]:
+        if message.get("sources"):
             with st.expander("📚 Sources & Citations"):
                 for src in message["sources"]:
                     st.markdown(f"- **{src['title']}** ({src.get('source', 'N/A')}) — Score: `{src.get('score', 0):.3f}`")
@@ -99,7 +99,6 @@ if prompt := st.chat_input("Ask a question about your ingested documents..."):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        sources = []
         
         try:
             # Query request with streaming
@@ -119,7 +118,7 @@ if prompt := st.chat_input("Ask a question about your ingested documents..."):
             message_placeholder.markdown(full_response)
             st.session_state.messages.append({"role": "assistant", "content": full_response})
             
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             error_msg = f"Error communicating with RAG engine: {e}"
             message_placeholder.markdown(error_msg)
             st.session_state.messages.append({"role": "assistant", "content": error_msg})
