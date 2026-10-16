@@ -47,7 +47,7 @@ jobs:
       env:
         DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/rag_db
         OLLAMA_BASE_URL: http://localhost:11434
-      run: pytest -v
+      run: PYTHONPATH=. pytest -v
 
   docker-build:
     needs: test-and-lint
