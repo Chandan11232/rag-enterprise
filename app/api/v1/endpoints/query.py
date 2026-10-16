@@ -20,7 +20,7 @@ class QueryRequest(BaseModel):
 
 
 @router.post("/query", status_code=status.HTTP_200_OK)
-async def query_rag(payload: QueryRequest, db: AsyncSession = Depends(get_db)):
+async def query_rag(payload: QueryRequest, db: AsyncSession = Depends(get_db)):  # noqa: B008
     try:
         # 1. Embed query
         embedder = Embedder.get_instance()
@@ -73,5 +73,5 @@ async def query_rag(payload: QueryRequest, db: AsyncSession = Depends(get_db)):
                     for c in ranked_chunks
                 ],
             }
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=str(e))

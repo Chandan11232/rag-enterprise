@@ -4,7 +4,7 @@ from sqlalchemy import text
 
 from app.api.v1.router import api_router
 from app.core.config import settings
-from app.core.database import engine, Base
+from app.core.database import Base, engine
 from app.db import models  # noqa
 
 app = FastAPI(

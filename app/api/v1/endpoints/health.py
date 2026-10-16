@@ -8,11 +8,11 @@ router = APIRouter()
 
 
 @router.get("/health", status_code=status.HTTP_200_OK)
-async def health_check(db: AsyncSession = Depends(get_db)):
+async def health_check(db: AsyncSession = Depends(get_db)):  # noqa: B008
     try:
         await db.execute(text("SELECT 1"))
         db_status = "healthy"
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         db_status = f"unhealthy: {e!s}"
 
     return {

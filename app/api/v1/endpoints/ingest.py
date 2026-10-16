@@ -26,7 +26,7 @@ class IngestResponse(BaseModel):
 
 
 @router.post("/ingest", response_model=IngestResponse, status_code=status.HTTP_201_CREATED)
-async def ingest_document(payload: IngestRequest, db: AsyncSession = Depends(get_db)):
+async def ingest_document(payload: IngestRequest, db: AsyncSession = Depends(get_db)):  # noqa: B008
     try:
         raw_chunks = DocumentParser.chunk_text(
             payload.content,
@@ -42,7 +42,7 @@ async def ingest_document(payload: IngestRequest, db: AsyncSession = Depends(get
         embeddings = embedder.embed_batch(raw_chunks)
 
         chunks_data = []
-        for idx, (chunk_text, embedding) in enumerate(zip(raw_chunks, embeddings)):
+        for idx, (chunk_text, embedding) in enumerate(zip(raw_chunks, embeddings, strict=False)):
             chunks_data.append(
                 {
                     "content": chunk_text,
@@ -61,5 +61,5 @@ async def ingest_document(payload: IngestRequest, db: AsyncSession = Depends(get
             chunks_created=len(chunks_data),
             message="Document successfully ingested and embedded.",
         )
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=str(e))
