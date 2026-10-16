@@ -4,16 +4,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     PROJECT_NAME: str = "RAG Enterprise Engine"
     API_V1_STR: str = "/api/v1"
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/rag_db"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@db:5432/rag_db"
     
     # LLM Configuration
     LLM_PROVIDER: str = "ollama"  # "ollama" or "gemini"
     OLLAMA_BASE_URL: str = "http://host.docker.internal:11434"
-    OLLAMA_MODEL: str = "deepseek-coder-v2:16b"
+    OLLAMA_MODEL: str = "llama3.2"
     
     # Gemini Configuration
     GEMINI_API_KEY: str | None = None
-    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-3.8-flash"
 
     EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
     RERANKER_MODEL: str = "BAAI/bge-reranker-base"

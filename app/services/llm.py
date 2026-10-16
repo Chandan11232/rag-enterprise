@@ -1,8 +1,7 @@
 import json
 from collections.abc import AsyncGenerator
-
+import google.generativeai as genai
 import httpx
-from google import genai
 
 from app.core.config import settings
 
@@ -14,19 +13,15 @@ class OllamaClient:
     ) -> AsyncGenerator[str, None]:
         if settings.LLM_PROVIDER.lower() == "gemini":
             if not settings.GEMINI_API_KEY:
-                yield "Error: GEMINI_API_KEY is not configured in .env or environment variables."
+                yield "Error: GEMINI_API_KEY is not configured in .env."
                 return
             try:
-                client = genai.Client(api_key=settings.GEMINI_API_KEY)
-                full_prompt = (
-                    f"System Instructions: {system_prompt}\n\n{prompt}"
-                    if system_prompt
-                    else prompt
+                genai.configure(api_key=settings.GEMINI_API_KEY)
+                model = genai.GenerativeModel(
+                    model_name=settings.GEMINI_MODEL,
+                    system_instruction=system_prompt if system_prompt else None,
                 )
-                response = client.models.generate_content_stream(
-                    model=settings.GEMINI_MODEL,
-                    contents=full_prompt,
-                )
+                response = model.generate_content(prompt, stream=True)
                 for chunk in response:
                     if chunk.text:
                         yield chunk.text
